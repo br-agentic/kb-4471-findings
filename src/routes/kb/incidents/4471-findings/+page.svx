@@ -1,0 +1,45 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: proposed
+reviewed: 2026-10-28
+signature: br-agentic
+---
+
+<script>
+  import FindingsTable from '#lib/kb/FindingsTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const signature = 'br-agentic';
+</script>
+
+[#4471](/kb/incidents/4471) was merged as one issue, "dates parse mm/dd in eu locales". Read
+report by report, it holds three problems with three different fixes.
+
+<Callout kind="warn">
+Not one issue. Fixing the parser closes the biggest group and leaves the other two open.
+</Callout>
+
+## The three problems
+
+<FindingsTable ticket={4471} />
+
+1. **Parser.** The shared parser reads every date month first, and these tenants write the day
+   first. This is the cause the ticket was merged for.
+2. **Form hint.** `booking-v3` prints `MM/DD/YYYY` under the date field. People at day-first
+   tenants type what the hint tells them, and the form reads it their way. The parser fix does
+   not touch this.
+3. **One day off.** The reports say a day, not a month: "every booking in June is one day off",
+   "Lisbon got Tuesday, Toronto got Monday". That reads as a time-zone problem. It is filed under
+   the parser by tenant, but a month flip does not explain it.
+
+## What to do
+
+- File one ticket per problem, each with its own count.
+- Do not close the two small groups when the parser fix ships.
+- When you count a big ticket, count each report once: the ticket export repeats reports where
+  its pages overlap.
+
+<RenderStamp {signature} />
